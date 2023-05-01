@@ -31,9 +31,10 @@ def addGitPrecommitHook(args):
     if not gitpath.is_dir():
         return
     exec_fn = gitpath / ".git" / "hooks" / "pre-commit"
-    exec_content = "pydev prune"
+    exec_content = "#!/bin/sh\npy -m pydev prune\nexit $?"
     if exec_fn.is_file():
         print(f"a pre-commit hook already exists @ {exec_fn}. Hook was not changed!")
+        return
     open(exec_fn, "w").write(exec_content)
 
 
