@@ -1,5 +1,6 @@
 import subprocess
 import sys
+from pathlib import Path
 
 LINELEN = 100
 
@@ -16,6 +17,7 @@ def attachToArgparser(parser):
 
 
 def main(args):
+    print(f"pruning {Path(args['src']).resolve()}")
     print("Formatting via black:")
     subprocess.call(["black", args["src"], "--line-length", f"{LINELEN}"])
     print("Linting via flake8:")

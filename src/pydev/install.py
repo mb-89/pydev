@@ -1,4 +1,3 @@
-import importlib.metadata as md
 import subprocess
 import sys
 from pathlib import Path
@@ -32,23 +31,21 @@ def addGitPrecommitHook(args):
     if not gitpath.is_dir():
         return
     exec_fn = gitpath / ".git" / "hooks" / "pre-commit"
-    exec_content = f"pydev prune"
+    exec_content = "pydev prune"
     if exec_fn.is_file():
         print(f"a pre-commit hook already exists @ {exec_fn}. Hook was not changed!")
     open(exec_fn, "w").write(exec_content)
 
 
 def addExecutable(args):
-    metadata = md.metadata(__name__.split(".")[0])
-    name = metadata["name"]
     f = Path(args["src"]) / "pyproject.toml"
     if not f.is_file():
         return
     pyproject = tomlkit.load(open(f, "r"))
     if not pyproject["install"]["executable"]:
         return
-    exec_fn = Path(sys.executable).parent / "Scripts" / f"{name}.bat"
-    exec_content = f"py -m {name} %*"
+    exec_fn = Path(sys.executable).parent / "Scripts" / "pydev.bat"
+    exec_content = "py -m pydev %*"
     open(exec_fn, "w").write(exec_content)
 
 
