@@ -6,4 +6,4 @@ except ModuleNotFoundError:  # pragma: no cover
 
 import sys  # pragma: no cover
 
-main(sys.argv)  # pragma: no cover
+main(sys.argv[1:])  # pragma: no cover

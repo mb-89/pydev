@@ -14,10 +14,11 @@ def attachToArgparser(parser):
 def main(args):
     errno = install(args)
     if errno:
-        return
+        return errno
 
     addExecutable(args)
     addGitPrecommitHook(args)
+    return 0
 
 
 def addGitPrecommitHook(args):
@@ -52,7 +53,9 @@ def addExecutable(args):
 
 def install(args):
     installcmd = ["pip", "install"]
+    postfix = ""
     if args["dev"]:
         installcmd += ["-e"]
-    installcmd += [args["src"]]
+        postfix = "[dev]"
+    installcmd += [args["src"] + postfix]
     return subprocess.call(installcmd)

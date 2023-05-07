@@ -9,3 +9,8 @@ and one config file (pyproject.toml).
 
 A similar tool is poetry (https://python-poetry.org/docs/pyproject/#include-and-exclude),
 however that didnt fit the niche that pydev occupies exactly.
+
+The idea is as follows:
+- Install pydev via pip install git+https://github.com/mb-89/pydev.git
+- use pydev to install other modules via pydev install <...>. This will for example also set up pre-commit hooks.
+- use commands like pydev prune,deps,test,build,release,... during development.

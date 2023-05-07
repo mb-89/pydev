@@ -1,5 +1,4 @@
 import subprocess
-import sys
 from pathlib import Path
 
 LINELEN = 100
@@ -20,6 +19,8 @@ def main(args):
     print(f"pruning {Path(args['src']).resolve()}")
     print("Formatting via black:")
     subprocess.call(["black", args["src"], "--line-length", f"{LINELEN}"])
+    print("sorting imports:")
+    subprocess.call(["isort", args["src"]])
     print("Linting via flake8:")
     flakeignore = [
         "E203",  # See https://github.com/PyCQA/pycodestyle/issues/373
@@ -32,4 +33,4 @@ def main(args):
             f"--max-line-length={LINELEN}",  # fits together with black
         ]
     )
-    sys.exit(flake_ret)
+    return flake_ret

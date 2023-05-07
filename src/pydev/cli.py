@@ -26,7 +26,6 @@ def main(argv):
         x.attachToArgparser(v[1])
         submodDict[k] = v
 
-    argv = argv[1:]
     kwargs = vars(parser.parse_args(argv))
 
     if kwargs["version"]:
@@ -42,7 +41,7 @@ def main(argv):
             parser = v[1]
             subargv = [x for x in argv if x != k]
             kwargs = vars(parser.parse_args(subargv))
-            mod.main(kwargs)
+            sys.exit(mod.main(kwargs))
 
 
 def collectsubmodules(parent):
@@ -50,7 +49,8 @@ def collectsubmodules(parent):
     for x in f.parent.glob("*.py"):
         if x.name.startswith("_") or x.name == f.name:
             continue
-        if not re.findall(r"^def main\((.*)\):(.*)$", open(x, "r").read(), re.MULTILINE):
+        mainExists = re.findall(r"^def main\((.*)\):(.*)$", open(x, "r").read(), re.MULTILINE)
+        if not mainExists:  # pragma: no cover (since in a clean directory, we wont have this)
             continue
         modname = f"{parent}.{x.stem}"
         spec = importlib.util.spec_from_file_location(modname, x)

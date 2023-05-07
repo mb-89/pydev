@@ -18,7 +18,7 @@ def attachToArgparser(parser):
 def main(args):
     print(f"checking {Path(args['src']).resolve()}")
     subprocess.call(["pipreqs", args["src"], "--force"])
-    p = Path("requirements.txt")
+    p = Path(args["src"]) / "requirements.txt"
     reqs = open(p, "r").readlines()
 
     # first, check if we added any of the requirements to the git-dependencies in pyproject.toml.
@@ -38,3 +38,4 @@ def main(args):
     # then, delete reqs.txt
     print(f"deleting {p}")
     p.unlink()
+    return 0
