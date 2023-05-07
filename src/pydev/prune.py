@@ -2,10 +2,11 @@ import subprocess
 from pathlib import Path
 
 LINELEN = 100
+DESCRIPTION = "prunes code, including black, isort, flake8, ..."
 
 
 def attachToArgparser(parser):
-    parser.description = "routines for pruning code."
+    parser.description = DESCRIPTION
     parser.add_argument(
         "-s",
         "--src",

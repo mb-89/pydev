@@ -4,9 +4,11 @@ from pathlib import Path
 
 import tomlkit
 
+DESCRIPTION = "installs modules, including git hooks, debugger cfg, ..."
+
 
 def attachToArgparser(parser):
-    parser.description = "routines for installing a given module"
+    parser.description = DESCRIPTION
     parser.add_argument("-d", "--dev", action="store_true", help="installs in dev mode")
     parser.add_argument("-s", "--src", type=str, default=".", help="source to install from")
 

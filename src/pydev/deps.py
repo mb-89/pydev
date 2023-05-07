@@ -3,9 +3,11 @@ from pathlib import Path
 
 import tomlkit
 
+DESCRIPTION = "collects package dependencies and stores them in pyroject.toml"
+
 
 def attachToArgparser(parser):
-    parser.description = "routines for collecting package dependencies."
+    parser.description = DESCRIPTION
     parser.add_argument(
         "-s",
         "--src",
@@ -17,8 +19,8 @@ def attachToArgparser(parser):
 
 def main(args):
     print(f"checking {Path(args['src']).resolve()}")
-    subprocess.call(["pipreqs", args["src"], "--force"])
-    p = Path(args["src"]) / "requirements.txt"
+    subprocess.call(["pipreqs", args["src"] + "/src", "--force"])
+    p = Path(args["src"]) / "src" / "requirements.txt"
     reqs = open(p, "r").readlines()
 
     # first, check if we added any of the requirements to the git-dependencies in pyproject.toml.

@@ -3,9 +3,11 @@ import os
 import subprocess
 from pathlib import Path
 
+DESCRIPTION = "tests code using pytest"
+
 
 def attachToArgparser(parser):
-    parser.description = "routines for testing python code."
+    parser.description = DESCRIPTION
     parser.add_argument(
         "-s",
         "--src",

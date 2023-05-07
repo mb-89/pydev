@@ -1,4 +1,0 @@
-- use the following to get the current version of the current module in code:
-    from importlib.metadata import version  
-    version('wheel')  
-    '0.32.3'

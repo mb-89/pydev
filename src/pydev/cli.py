@@ -22,7 +22,7 @@ def main(argv):
 
     for x in submodules:
         k = x.__name__.split(".")[-1]
-        v = (x, subparsers.add_parser(k))
+        v = (x, subparsers.add_parser(k, help=x.DESCRIPTION))
         x.attachToArgparser(v[1])
         submodDict[k] = v
 
