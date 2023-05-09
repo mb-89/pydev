@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 
@@ -57,6 +58,10 @@ def test_install_dev(monkeypatch, tmp_path):
         with pytest.raises(SystemExit) as exc:
             cli.main(["install", "-s", str(tmp_path), "-d"])
         assert exc.value.code == 0
+
+        jsoncfg = tmp_path / ".vscode" / "launch.json"
+        jsoncfg.unlink()  # remove debug cfg
+        open(jsoncfg, "w").write(json.dumps({"configurations": []}))
 
         tomlkit.dump({"install": {"executable": False}}, open(tmp_path / "pyproject.toml", "w"))
         with pytest.raises(SystemExit) as exc:

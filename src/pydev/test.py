@@ -1,13 +1,14 @@
+"""Test module code using pytest."""
+
 import importlib.metadata as md
 import os
 import subprocess
 from pathlib import Path
 
-DESCRIPTION = "tests code using pytest"
-
 
 def attachToArgparser(parser):
-    parser.description = DESCRIPTION
+    """Attach a subparser for this module to the given parser."""
+    parser.description = globals()["__doc__"]
     parser.add_argument(
         "-s",
         "--src",
@@ -19,9 +20,11 @@ def attachToArgparser(parser):
     parser.add_argument(
         "-f", "--filt", default="", type=str, help="regex that can be used to filter tests"
     )
+    parser.add_argument("-d", "--deploy", action="store_true", help="pass to deploy to a tox venv")
 
 
 def main(args):
+    """Execute this modules function with the args defined in attachToArgparser."""
     print(f"testing {Path(args['src']).resolve()}")
     p = Path(args["src"])
     cmd = ["pytest", str(p), "-k", args["filt"]]
@@ -46,4 +49,11 @@ def main(args):
         r = p / "tests" / "report"
         os.system(str(r / "report.html"))
         os.system(str(r / "index.html"))
+
+    if errno:
+        print("local tests failed, therefore deployed tests will be skipped.")
+    elif args["deploy"]:
+        print("running tests deployed using tox...")
+        errno = subprocess.call(["tox"], cwd=args["src"])
+
     return errno

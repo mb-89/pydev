@@ -27,5 +27,28 @@ dev = [
     "pytest",
     "pytest-html",
     "isort",
-    "build"
+    "build",
+    "tox",
+    "flake8-docstring",
+    "sphinx",
+    "sphinx-rtd-theme",
 ]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.10
+envlist = py310
+isolated_build = true
+
+[testenv]
+deps = 
+    tomlkit~=0.11.8
+        pytest
+setenv = 
+    PYTHONPATH = {toxinidir}
+commands = 
+    pytest --basetemp={envtmpdir}
+
+
+"""

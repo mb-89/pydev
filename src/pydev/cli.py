@@ -1,3 +1,5 @@
+"""Provide a cli for all pydev submodules."""
+
 import argparse
 import importlib.metadata as md
 import importlib.util
@@ -7,6 +9,7 @@ from pathlib import Path
 
 
 def main(argv):
+    """Parse args and call requested functions in the submodules."""
     metadata = md.metadata(__name__.split(".")[0])
     modname = metadata["Name"]
     parser = argparse.ArgumentParser(
@@ -22,7 +25,7 @@ def main(argv):
 
     for x in submodules:
         k = x.__name__.split(".")[-1]
-        v = (x, subparsers.add_parser(k, help=x.DESCRIPTION))
+        v = (x, subparsers.add_parser(k, help=x.__doc__))
         x.attachToArgparser(v[1])
         submodDict[k] = v
 
@@ -45,6 +48,7 @@ def main(argv):
 
 
 def collectsubmodules(parent):
+    """Parse python src files and return all valid submodules of pydev."""
     f = Path(__file__)
     for x in f.parent.glob("*.py"):
         if x.name.startswith("_") or x.name == f.name:

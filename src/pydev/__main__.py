@@ -1,3 +1,4 @@
+"""Helps developing python modules."""
 try:  # pragma: no cover
     from pydev.cli import main
 except ModuleNotFoundError:  # pragma: no cover

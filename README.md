@@ -8,7 +8,7 @@ configuration needed for version control, testing, building, publishing etc into
 and one config file (pyproject.toml).
 
 A similar tool is poetry (https://python-poetry.org/docs/pyproject/#include-and-exclude),
-however that didnt fit the niche that pydev occupies exactly.
+however poetry didnt fit the niche that pydev occupies exactly.
 
 The idea is as follows:
 - Install pydev via pip install git+https://github.com/mb-89/pydev.git
