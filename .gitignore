@@ -132,3 +132,4 @@ dmypy.json
 
 tests/report
 doc/
+.github/workflows/tests.yml
