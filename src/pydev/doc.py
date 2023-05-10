@@ -17,7 +17,7 @@ def main(args):
     """Execute this modules function with the args defined in attachToArgparser."""
     dp = Path(args["src"]) / "doc"
     shutil.rmtree(dp, ignore_errors=True)
-    dp.mkdir()
+    dp.mkdir(exist_ok=True)  # exist ok only needed for testing
 
     metadata = md.metadata(__name__.split(".")[0])
     modname = metadata["Name"]
@@ -44,7 +44,7 @@ def main(args):
         ],
         cwd=dp,
     )
-    if errno:
+    if errno:  # pragma: no cover /generic edge case
         return errno
 
     conf = open(dp / "conf.py", "r").readlines()
@@ -56,10 +56,10 @@ def main(args):
     errno = subprocess.call(
         ["sphinx-apidoc", "--module-first", "-o", "./doc", f"./src/{modname}"], cwd=args["src"]
     )
-    if errno:
+    if errno:  # pragma: no cover /generic edge case
         return errno
     errno = subprocess.call([r".\doc\make.bat", "html"], cwd=args["src"])
-    if errno:
+    if errno:  # pragma: no cover /generic edge case
         return errno
     output = Path(args["src"]) / "doc" / "_build" / "html" / "index.html"
     os.system(str(output))

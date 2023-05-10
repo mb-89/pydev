@@ -1,5 +1,6 @@
 """Installs modules, including git hooks, debugger cfg, ..."""
 
+import importlib.metadata as md
 import json
 import subprocess
 import sys
@@ -25,7 +26,21 @@ def main(args):
     addExecutable(args)
     addGitPrecommitHook(args)
     addVSCodeConfig(args)
+    addGithubAction(args)
     return 0
+
+
+def addGithubAction(args):
+    """Add useful github actions."""
+    if not args["dev"]:
+        return
+    dst = Path(args["src"]) / ".github" / "workflows" / "tests.yml"
+    if not dst.is_file():
+        dst.parent.mkdir(parents=True, exist_ok=True)
+    metadata = md.metadata(__name__.split(".")[0])
+    open(dst, "w").write(
+        TESTYML.replace("#VERSION#", metadata["Requires-Python"].replace(">=", ""))
+    )
 
 
 def addVSCodeConfig(args):
@@ -99,3 +114,32 @@ DEBUGCFG = {
     "console": "integratedTerminal",
     "env": {"PYTEST_ADDOPTS": "--capture=sys --no-cov -s"},
 }
+
+TESTYML = """
+name: Tests
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+        python-version: ['#VERSION#']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox tox-gh-actions
+    - name: Test with tox
+      run: tox
+}"""

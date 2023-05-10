@@ -35,7 +35,7 @@ def main(args):
             args["src"],
             f"--extend-ignore={''.join(flakeignore)}",
             f"--max-line-length={LINELEN}",  # fits together with black
-            "--exclude=doc/",
+            "--exclude=doc/,.tox/",
             "--per-file-ignores=tests/*:D103,D100,D101,D107",  # no docstrings needed for tests
         ]
     )
