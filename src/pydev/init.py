@@ -45,9 +45,9 @@ def main(args):
 
     # create pyproject.toml with changes (use "Do/Does nothing yet" for docstring and descr)
     # we dont need to fix the dependencies here. they will be fixed by calling deps later.
-    pypsrc = Path(__file__).parent.parent.parent / "pyproject.toml"
+    pypsrc = PYPROJECT
     pypdst = dst / "pyproject.toml"
-    pyproject = tomlkit.load(open(pypsrc, "r"))
+    pyproject = tomlkit.loads(pypsrc)
     pyproject["project"]["name"] = modname
     pyproject["project"]["version"] = "0.0.0"
     pyproject["project"]["description"] = "Does nothing (yet)."
@@ -55,7 +55,7 @@ def main(args):
     tomlkit.dump(pyproject, open(pypdst, "w"))
 
     # copy gitignore
-    shutil.copyfile(pypsrc.parent / ".gitignore", dst / ".gitignore")
+    open(dst / ".gitignore", "w").write(GITIGNORE)
     # create a test that only checks the version feature
     dsttest = dst / "tests" / "test_basics.py"
     dsttest.parent.mkdir(parents=True)
@@ -132,3 +132,196 @@ import sys  # pragma: no cover
 main(sys.argv[1:])  # pragma: no cover
 
 '''
+
+PYPROJECT = '''dependencies = ["jsmin~=3.0.1", "tomlkit~=0.11.8"]
+[project]
+name = "pydev"
+version = "0.0.1"
+description = "a helper for developing python modules"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT License"}
+authors = [{name = "Markus Barthel"}]
+classifiers= ["Programming Language :: Python :: 3"]
+
+[build-system]
+requires = ["setuptools>=42.0","wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+addopts = "--capture=sys"
+testpaths = ["tests",]
+
+[install]
+executable = true
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "pytest",
+    "pytest-html",
+    "isort",
+    "build",
+    "tox",
+    "flake8-docstrings",
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.10
+envlist = py310
+isolated_build = true
+
+[testenv]
+deps =
+    jsmin~=3.0.1
+        tomlkit~=0.11.8
+        pytest
+setenv =
+    PYTHONPATH = {toxinidir}
+commands =
+    pytest --basetemp={envtmpdir}
+
+
+"""'''
+
+GITIGNORE = """
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+.vscode/*.*
+*.sqlite
+
+tests/report
+doc/
+"""
