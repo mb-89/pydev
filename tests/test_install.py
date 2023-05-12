@@ -54,7 +54,10 @@ def test_install_dev(monkeypatch, tmp_path):
         # dev, with and without executable
         (tmp_path / "Scripts").mkdir()
 
-        tomlkit.dump({"install": {"executable": True}}, open(tmp_path / "pyproject.toml", "w"))
+        tomlkit.dump(
+            {"install": {"executable": True}, "project": {"name": "test"}},
+            open(tmp_path / "pyproject.toml", "w"),
+        )
         with pytest.raises(SystemExit) as exc:
             cli.main(["install", "-s", str(tmp_path), "-d"])
         assert exc.value.code == 0

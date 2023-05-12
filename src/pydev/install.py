@@ -74,7 +74,7 @@ def addGitPrecommitHook(args):
     if not gitpath.is_dir():
         return
     exec_fn = gitpath / ".git" / "hooks" / "pre-commit"
-    exec_content = "#!/bin/sh\npy -m pydev prune\nexit $?"
+    exec_content = PRECOMMIT
     if exec_fn.is_file():
         print(f"a pre-commit hook already exists @ {exec_fn}. Hook was not changed!")
         return
@@ -89,8 +89,9 @@ def addExecutable(args):
     pyproject = tomlkit.load(open(f, "r"))
     if not pyproject["install"]["executable"]:
         return
-    exec_fn = Path(sys.executable).parent / "Scripts" / "pydev.bat"
-    exec_content = "py -m pydev %*"
+    pname = pyproject["project"]["name"]
+    exec_fn = Path(sys.executable).parent / "Scripts" / f"{pname}.bat"
+    exec_content = f"py -m {pname} %*"
     open(exec_fn, "w").write(exec_content)
 
 
@@ -104,6 +105,11 @@ def install(args):
     installcmd += [args["src"] + postfix]
     return subprocess.call(installcmd)
 
+
+PRECOMMIT = """#!/bin/sh
+py -m pydev prune
+exit $?
+"""
 
 DEBUGCFG = {
     "name": "Python: Debug Test",

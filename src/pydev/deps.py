@@ -24,12 +24,13 @@ def attachToArgparser(parser):
 def main(args):
     """Execute this modules function with the args defined in attachToArgparser."""
     print(f"checking {Path(args['src']).resolve()}")
-    subprocess.call(["pipreqs", args["src"] + "/src", "--force"])
+    tmp = args["src"] + "/src"
+    subprocess.call(["pipreqs", tmp, "--force"])
     p = Path(args["src"]) / "src" / "requirements.txt"
     try:
         reqs = open(p, "r").readlines()
     except FileNotFoundError:  # pragma: no cover
-        time.sleep(1)  # sometimes the file creation takes some time..
+        time.sleep(2)  # sometimes the file creation takes some time..
         reqs = open(p, "r").readlines()
 
     # first, check if we added any of the requirements to the git-dependencies in pyproject.toml.

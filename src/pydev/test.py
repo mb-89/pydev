@@ -28,6 +28,7 @@ def main(args):
     print(f"testing {Path(args['src']).resolve()}")
     p = Path(args["src"])
     cmd = ["pytest", str(p), "-k", args["filt"]]
+
     show = False
     if not args["filt"]:
         metadata = md.metadata(__name__.split(".")[0])
