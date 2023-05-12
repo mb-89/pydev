@@ -73,6 +73,11 @@ def execute(args, nv):
     if errno:  # pragma: no cover:generic edgecase
         return errno
 
+    cmd = ["git", "push"]
+    errno = subprocess.call(cmd, cwd=mod)
+    if errno:  # pragma: no cover:generic edgecase
+        return errno
+
     return errno
 
 
