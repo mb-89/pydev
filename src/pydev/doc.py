@@ -49,6 +49,12 @@ def main(args):
 
     conf = open(dp / "conf.py", "r").readlines()
     conf.append('html_theme = "sphinx_rtd_theme"')
+    for idx, x in enumerate(conf):
+        if x.startswith("""version = '"""):
+            ver = v
+            conf[idx] = f"""version = '{ver}'\n"""
+            conf[idx + 1] = f"""release = '{ver}'\n"""
+            break
     open(dp / "conf.py", "w").write("".join(conf))
     conf = open(dp / "index.rst", "r").read()
     conf = conf.replace("Indices and tables", f"   {modname}\n\n" "Indices and tables")

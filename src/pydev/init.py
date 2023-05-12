@@ -87,6 +87,9 @@ def main(args):
     subprocess.call(cmd, cwd=dst)
 
     # run pydev release (bump version to 0.0.1 alpha, prune, test, doc)
+    cmd = ["py", "-m", "pydev", "prune", "-s", f"{str(dst)}"]
+    subprocess.call(cmd)
+
     # this yields a cli that only contains -h and -v
     return 0
 
@@ -104,7 +107,7 @@ import argparse
 import importlib.metadata as md
 
 def main(argv):
-    """Parse args and call requested functions"""
+    """Parse args and call requested functions."""
     metadata = md.metadata(__name__.split(".")[0])
     modname = metadata["Name"]
     parser = argparse.ArgumentParser(
@@ -136,7 +139,7 @@ main(sys.argv[1:])  # pragma: no cover
 PYPROJECT = '''dependencies = ["jsmin~=3.0.1", "tomlkit~=0.11.8"]
 [project]
 name = "pydev"
-version = "0.0.1"
+version = "0.0.0"
 description = "a helper for developing python modules"
 readme = "README.md"
 requires-python = ">=3.10"

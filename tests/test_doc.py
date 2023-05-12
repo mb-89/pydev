@@ -14,7 +14,7 @@ def noop(*args, **kwargs):
 def test_doc(monkeypatch, tmp_path):
     f = tmp_path / "doc" / "conf.py"
     f.parent.mkdir()
-    open(f, "w").write("test")
+    open(f, "w").write("test\nversion = '0.0.0'\nrelease = '0.0.0'\n")
     f2 = tmp_path / "doc" / "index.rst"
     open(f2, "w").write("test")
     with monkeypatch.context() as mock:
