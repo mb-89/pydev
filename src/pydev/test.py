@@ -28,6 +28,7 @@ def main(args):
     print(f"testing {rp}")
     p = Path(args["src"])
     cmd = ["pytest", str(p), "-k", args["filt"]]
+    reportpath = p / "tests" / "report"
 
     show = False
     if not args["filt"]:
@@ -36,8 +37,8 @@ def main(args):
         cmd.extend(covcmds)
         if args["show"]:
             reportcmds = [
-                "--cov-report=html:tests/report",
-                "--html=tests/report/report.html",
+                f"--cov-report=html:{reportpath}",
+                f"--html={reportpath}/report.html",
                 "--self-contained-html",
             ]
             cmd.extend(reportcmds)
