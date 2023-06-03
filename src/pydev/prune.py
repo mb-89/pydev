@@ -28,16 +28,17 @@ def main(args):
     print("Linting via flake8:")
     flakeignore = [
         "E203",  # See https://github.com/PyCQA/pycodestyle/issues/373
+        "D107",  # we dont need docstrings for __init__
     ]
     flake_ret = subprocess.call(
         [
             "flake8",
             args["src"],
-            f"--extend-ignore={''.join(flakeignore)}",
+            f"--extend-ignore={','.join(flakeignore)}",
             f"--max-line-length={LINELEN}",  # fits together with black
             "--exclude=doc/,.tox/",
             # no docstrings needed for tests:
-            f"--per-file-ignores={args['src']}/tests/*:D103,D100,D101,D107",
+            f"--per-file-ignores={args['src']}/tests/*:D103,D100,D101",
         ]
     )
     return flake_ret
