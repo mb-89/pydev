@@ -50,6 +50,8 @@ def main(args):
 
     # also enter the dependencies in the tox subconfig
     deps.append("pytest")
+    deps.append("pytest-qt")
+
     toxstr = pyproject["tool"]["tox"].pop("legacy_tox_ini")
     toxcfg = configparser.ConfigParser()
     toxcfg.read_string(toxstr)

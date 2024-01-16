@@ -32,6 +32,7 @@ def main(args):
         "D105",
         "F405",
         "F403",
+        "D107",  # we dont need docstrings for __init__
     ]
     flake_ret = subprocess.call(
         [
@@ -40,7 +41,8 @@ def main(args):
             f"--extend-ignore={','.join(flakeignore)}",
             f"--max-line-length={LINELEN}",  # fits together with black
             "--exclude=doc/,.tox/",
-            "--per-file-ignores=tests/*:D103,D100,D101,D107",  # no docstrings needed for tests
+            # no docstrings needed for tests:
+            f"--per-file-ignores={args['src']}/tests/*:D103,D100,D101",
         ]
     )
     return flake_ret

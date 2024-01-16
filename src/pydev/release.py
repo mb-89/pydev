@@ -65,8 +65,6 @@ def execute(args, nv):
 
     cmd = ["git", "commit", "-m", f"{msg}"]
     errno = subprocess.call(cmd, cwd=mod)
-    if errno:  # pragma: no cover:generic edgecase
-        return errno
 
     cmd = ["git", "tag", "-a", nv, "-m", f"{msg}"]
     errno = subprocess.call(cmd, cwd=mod)

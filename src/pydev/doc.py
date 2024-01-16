@@ -1,10 +1,11 @@
 """Build the documentation for this package package."""
 
-import importlib.metadata as md
 import os
 import shutil
 import subprocess
 from pathlib import Path
+
+import tomlkit
 
 
 def attachToArgparser(parser):
@@ -19,10 +20,12 @@ def main(args):
     shutil.rmtree(dp, ignore_errors=True)
     dp.mkdir(exist_ok=True)  # exist ok only needed for testing
 
-    metadata = md.metadata(__name__.split(".")[0])
-    modname = metadata["Name"]
-    auth = metadata["author"]
-    v = metadata["version"]
+    tmp = Path(args["src"]) / "pyproject.toml"
+    pyproject = tomlkit.load(open(tmp, "r"))
+
+    modname = pyproject["project"]["name"]
+    auth = ", ".join(x["name"] for x in pyproject["project"]["authors"])
+    v = pyproject["project"]["version"]
 
     errno = subprocess.call(
         [
