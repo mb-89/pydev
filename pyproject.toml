@@ -5,7 +5,7 @@ name = "pydev"
 version = "0.1.0"
 description = "a helper for developing python modules"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = {text = "MIT License"}
 authors = [{name = "Markus Barthel"}]
 classifiers= ["Programming Language :: Python :: 3"]
@@ -38,8 +38,8 @@ dev = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.10
-envlist = py310
+minversion = 3.11
+envlist = py311
 isolated_build = true
 
 [testenv]
@@ -51,7 +51,7 @@ deps =
 setenv = 
     PYTHONPATH = {toxinidir}
 commands = 
-    pytest --basetemp={envtmpdir} --cov-fail-under=100
+    pytest --basetemp={envtmpdir} --cov=pydev --cov=mypackage --cov-fail-under=100
 
 
 """
