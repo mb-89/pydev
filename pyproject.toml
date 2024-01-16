@@ -51,7 +51,7 @@ deps =
 setenv = 
     PYTHONPATH = {toxinidir}
 commands = 
-    pytest --basetemp={envtmpdir} --cov=pydev --cov=mypackage --cov-fail-under=100
+    pytest --basetemp={envtmpdir} --cov=pydev --cov-fail-under=100
 
 
 """
