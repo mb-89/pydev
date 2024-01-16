@@ -47,10 +47,11 @@ deps =
     jsmin~=3.0.1
         tomlkit~=0.11.8
         pytest
+        pytest-cov
 setenv = 
     PYTHONPATH = {toxinidir}
 commands = 
-    pytest --basetemp={envtmpdir}
+    pytest --basetemp={envtmpdir} --cov-fail-under=100
 
 
 """
