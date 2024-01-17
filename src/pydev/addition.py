@@ -1,7 +1,7 @@
-"""Implements addition."""
+"""Contains addition function."""
 
 
 def addition(a, b):
-    """Calculate sum of a and b."""
+    """Add two numbers."""
     c = a + b
     return c
